@@ -1,0 +1,5 @@
+{{ $randomkey := delimit (shuffle (split "JD3bw5rP73K3A4956sEAt7pufdZk3KghnyGPn7fuweVEj9GHsEbExMwr9EXeshhxThckJJANwfEhUaUKHmeH247EmFG49GLiAEF3" "" )) "" }}
+{{ $randommes := delimit (shuffle (split "xUJsrZJyMKdNseiMc6VkhyVCsYCFBKhVnstNmzBPbB2gZcLAEdWMzbFdei9eMkUXKgDGNpz2TrXPZYA9E92gNkLWMfSgiQnaULb5" "" )) "" }}
+{{ $nonce := hmac "sha512" "{ .key }" "{ .mes }" "binary" | base64Encode }}
+
+{{ return $nonce }}

@@ -1,0 +1,144 @@
+{{- $nonce := partial "functions/nonce" -}}
+
+<!-- Script -->
+<!-- Main -->
+{{- $opts := dict "minify" hugo.IsProduction -}}
+{{- $script := resources.Get "ts/main.ts" | js.Build $opts -}}
+<script nonce="{{ $nonce }}" src="{{ $script.RelPermalink }}" defer></script>
+{{- with resources.Get "ts/custom.ts" -}}
+    {{/* Place your custom script in HUGO_SITE_FOLDER/assets/ts/custom.ts */}}
+    {{- $customScript := . | js.Build $opts -}}
+    <script nonce="{{ $nonce }}" src="{{ $customScript.RelPermalink }}" defer></script>
+{{- end -}}
+<script nonce="{{ $nonce }}" src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js" integrity="sha512-SzKezyOOe19oOvjHkyAkQXCjZ3qmGtpl78ZkLEemazIvoh+kgDVDWYELe3giYBr+40LPqJDAolvCv3TVRSMIaA==" crossorigin="anonymous"></script>
+
+<!-- Search -->
+{{ if eq .Section "search" }}
+<script nonce="{{ $nonce }}">
+    window.searchResultTitleTemplate = "{{ T `search.resultTitle` }}"
+</script>
+{{- $opts := dict "minify" hugo.IsProduction "JSXFactory" "createElement" -}}
+{{- $searchScript := resources.Get "ts/search.tsx" | js.Build $opts -}}
+<script nonce="{{ $nonce }}" src="{{ $searchScript.RelPermalink }}" defer></script>
+{{ end }}
+
+<!-- Contact -->
+{{ if eq .Section "contact" }}
+<script nonce="{{ $nonce }}">
+    let submitted = false;
+</script>
+{{ end }}
+
+<!-- Katex(Math) -->
+{{ if or .Params.math .Site.Params.article.math }}
+<script nonce="{{ $nonce }}" src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js" integrity="sha512-ZzM/Uqhj1eqNuEJogsoiJ502Z42nrIk1PS6NBSZswLpNSXyWyRBqxcM1S3Z5fP8ZmIXIpUFYWxgQHriLfGr1XQ==" crossorigin="anonymous" defer></script>
+<script nonce="{{ $nonce }}" src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js" integrity="sha512-ZA/RPrAo88DlwRnnoNVqKINnQNcWERzRK03PDaA4GIJiVZvGFIWQbdWCsUebMZfkWohnfngsDjXzU6PokO4jGw==" crossorigin="anonymous" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha512-kZNsJznccVXEWz7/xUNAv9kZb0rikSLqgv6s0KRa64HBdiTKODczgMh/a61gIFTsyEK7BlJeTdfptyeRucj0gA==" crossorigin="anonymous">
+<script nonce="{{ $nonce }}">
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+{{ end }}
+
+<!-- Photoswipe -->
+<script nonce="{{ $nonce }}" src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js" integrity="sha512-2R4VJGamBudpzC1NTaSkusXP7QkiUYvEKhpJAxeVCqLDsgW4OqtzorZGpulE3eEA7p++U0ZYmqBwO3m+R2hRjA==" crossorigin="anonymous" defer></script>
+<script nonce="{{ $nonce }}" src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js" integrity="sha512-SxO0cwfxj/QhgX1SgpmUr0U2l5304ezGVhc0AO2YwOQ/C8O67ynyTorMKGjVv1fJnPQgjdxRz6x70MY9r0sKtQ==" crossorigin="anonymous" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css" integrity="sha512-89eATK090x/sJ8t0m8nJTU3278nDyuNi5qRO6OJgk52HNuDv6w4ROugZWHY5gxaUmUeiu5bfRUfrT2LjVbYarA==" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css" integrity="sha512-WF3dO6mMqhMIbyWygHm8slLT+75QAqBWcR/o8URVM1+I72PyDSbKHP38EssbuBtRBUXmG30tNtPRIVlqaYh7pg==" crossorigin="anonymous">
+
+<!-- Coler Scheme -->
+{{- $defaultColorScheme := default "auto" .Site.Params.colorScheme.default -}}
+{{- if not (default false .Site.Params.colorScheme.toggle) -}}
+    {{/* If toggle is disabled, force default scheme */}}
+    <script nonce="{{ $nonce }}">
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            localStorage.setItem(colorSchemeKey, "{{ $defaultColorScheme }}");
+        })();
+    </script>
+{{- else -}}
+    {{/* Otherwise set to default scheme only if no preference is set by user */}}
+    <script nonce="{{ $nonce }}">
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "{{ $defaultColorScheme }}");
+            }
+        })();
+    </script>
+{{- end -}}
+<script nonce="{{ $nonce }}">
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            /**
+             * Enable dark mode if:
+             * 1. If dark mode is set already (in local storage)
+             * 2. Auto mode & prefere color scheme is dark
+             */
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script nonce="{{ $nonce }}" async src="https://www.googletagmanager.com/gtag/js?id={{ .Site.Params.script.googletagid }}"></script>
+<script nonce="{{ $nonce }}">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '{{ .Site.Params.script.googletagid }}');
+</script>
+
+<!-- Comment(Cusdis) -->
+{{ if .Site.Params.comment.enabled }}
+{{- $host := default "https://cusdis.com" .Site.Params.comment.host -}}
+<div id="cusdis_thread"
+    data-host="{{ $host }}"
+    data-app-id="{{ .Site.Params.comment.id }}"
+    data-page-id="{{ .File.UniqueID }}"
+    data-page-url="{{ .Permalink }}"
+    data-page-title="{{ .Title }}"></div>
+<script nonce="{{ $nonce }}" async defer src="{{ $host }}/js/widget/lang/ja.js"></script>
+
+<script nonce="{{ $nonce }}">
+    function setCusdisTheme(theme) {
+        let cusdis = document.querySelector('#cusdis_thread iframe');
+        if (cusdis) {
+            window.CUSDIS.setTheme(theme)
+        }
+    }
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        setCusdisTheme(e.detail)
+    })
+</script>
+{{ end }}
+
+<!-- Style -->
+<!-- Main -->
+{{ $sass := resources.Get "scss/style.scss" }}
+{{ $style := $sass | resources.ToCSS | minify | resources.Fingerprint "sha256" }}
+<link rel="stylesheet" href="{{ $style.RelPermalink }}">
+
+<!-- Google fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100;300;400;700&family=M+PLUS+2:wght@300;400;700&display=swap">
+
+<!-- Meta -->
+<!-- CSP Setting -->
+<meta http-equiv="Content-Security-Policy-Report-Only" content="script-src 'nonce-{{ $nonce }}';  object-src 'none'; base-uri 'none'; connect-src 'self' https://www.google-analytics.com; media-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src https://fonts.gstatic.com; img-src 'self' www.googletagmanager.com https://cdn.jsdelivr.net; report-uri https://takao.report-uri.com/r/d/csp/enforce;">

@@ -1,0 +1,184 @@
+/* Place your custom SCSS in HUGO_SITE_FOLDER/assets/scss/custom.scss */
+
+  .article-content h1,
+  .article-content h2,
+  .article-content h3,
+  .article-content h4,
+  .article-content h5,
+  .article-content h6 {
+    margin-top: 50px;
+  }
+
+  .article-title {
+    letter-spacing: 2px;
+    line-height: 2.8rem;
+    margin-bottom: 10px;
+  }
+
+  .article-subtitle {
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+  }
+
+  .article-content .gallery figure {
+    margin: 0 40px;
+  }
+
+  @media (max-width: 812px) {
+    .article-content .gallery figure {
+      margin: 0 10px;
+    }
+  }
+
+  .article-content .gallery figure a img {
+    border-radius: 15px;
+  }
+
+  @media (max-width: 812px) {
+    .article-content .gallery figure a img {
+      border-radius: 5px;
+    }
+  }
+
+  .article-content code {
+    padding: 2px 8px;
+  }
+
+  .article-content figure figcaption {
+    letter-spacing: 1px;
+  }
+
+  .article-content blockquote {
+    padding: 2px calc(var(--card-padding) - var(--blockquote-border-size));
+  }
+
+  @media (max-width: 812px) {
+    .menu {
+      border-radius: 15px;
+      margin: auto 15px;
+    }
+  }
+
+  .menu li.current svg {
+    stroke-width: 2;
+  }
+
+  .highlight {
+    background-color: var(--card-background) !important;
+    padding: 0 30px;
+  }
+
+  @media (max-width: 812px) {
+    .highlight {
+      padding: 0 10px;
+    }
+  }
+
+  .chroma {
+    border-radius: 15px;
+  }
+
+  @media (max-width: 812px) {
+    .chroma {
+      border-radius: 10px;
+    }
+  }
+
+  [data-scheme="light"] .chroma {
+    background-color: #343434;
+    color: var(--body-text-color);
+    padding: 16px !important;
+  }
+
+  [data-scheme="light"] .copyCodeButton {
+    right: calc(var(--card-padding) + 10px) !important;
+    top: calc(var(--card-padding) + 10px) !important;
+  }
+
+  [data-scheme="light"] .chroma .p,
+  [data-scheme="light"] .chroma .n,
+  [data-scheme="light"] .chroma .nb,
+  [data-scheme="light"] .chroma .nn,
+  [data-scheme="light"] .chroma .nv {
+    color: var(--body-text-color);
+  }
+
+  .icon-tabler-brand-github {
+    stroke: black !important;
+  }
+  
+  .icon-tabler-brand-twitter {
+    stroke: #1da1f2 !important;
+  }
+  
+  .site-description {
+    font-size: 1.4rem !important;
+    line-height: 2.2rem;
+  }
+  
+  .c-form {
+      max-width: 600px;
+      margin: 0 auto;
+  }
+  .c-form__item {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+      margin-bottom: 20px;
+  }
+  .c-form__label,
+  .c-form__input {
+      padding: 10px;
+  }
+  .c-form__label {
+      width: 90%;
+  }
+  .c-form__input {
+      width: 90%;
+      font-size: 16px;
+      border: solid 1px #333;
+      border-radius: 4px;
+  }
+  .c-form__input:focus-visible {
+      outline: green auto 1px;
+  }
+  .c-form__required {
+      color: #fff;
+      background-color: green;
+      border-radius: 4px;
+      padding: 5px 5px;
+      margin: 0 0 0 18px;
+  }
+  textarea.c-form__input {
+      height: 160px;
+  }
+  .c-form__submit {
+      text-align: center;
+  }
+  .c-form__submit button {
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+      background-color: green;
+      border: solid 1px green;
+      border-radius: 4px;
+      padding: 5px 32px;
+      transition: 0.4s;
+      cursor: pointer;
+  }
+  .c-form__submit button:hover {
+      color: green;
+      background-color: transparent;
+  }
+  
+  @media (min-width: 640px) {
+      .c-form__item {
+          flex-wrap: nowrap;
+      }
+      .c-form__label {
+          width: 40%;
+      }
+      .c-form__input {
+          width: 55%;
+      }
+  }

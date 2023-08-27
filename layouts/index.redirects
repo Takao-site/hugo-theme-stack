@@ -1,0 +1,2 @@
+/twitter https://twitter.com/{{ .Site.Params.redirect.twitter }}
+/github https://github.com/{{ .Site.Params.redirect.github }}
